@@ -18,11 +18,17 @@ public class DataController {
     private DataService dataService;
 
     @PostMapping(value = "/postData")
-    public ResponseEntity<HashMap<String, Object>> postTrainerData(@RequestParam (name = "file") MultipartFile file) throws IOException {
-        HashMap<String, Object> response = new HashMap<String, Object>();
-        dataService.saveTrainingData(file);
-        response.put("message", "Training data posted successfully.");
+    public ResponseEntity<HashMap<String, Object>> postTrainerData(@RequestParam (name = "file") MultipartFile file, @RequestParam (name = "name") String name) throws IOException {
+        HashMap<String, Object> response = new HashMap<>();
+        String result = dataService.saveTrainingData(file, name);
+        response.put("message", result);
+
+        if(result == null) return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        if(result.contains("Could not")) return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        if(result.contains("Bad Request.")) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+
     }
 
 }
