@@ -1,5 +1,6 @@
 package com.jacob.capstone.rest;
 
+import com.jacob.capstone.services.CaptionService;
 import com.jacob.capstone.services.DataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,18 +18,28 @@ public class DataController {
     @Autowired
     private DataService dataService;
 
+        @RequestMapping(path = "/createCaptionIndex", method = RequestMethod.GET)
+    public ResponseEntity<?> createCaptionIndex() {
+        dataService.createCaptionIndex();
+        return ResponseEntity.status(HttpStatus.OK).body("Caption Index Created");
+    }
+    @RequestMapping(path = "/createHashtagIndex", method = RequestMethod.GET)
+    public ResponseEntity<?> createHashtagIndex() {
+        dataService.createHashtagIndex();
+        return ResponseEntity.status(HttpStatus.OK).body("Hashtag Index Created");
+    }
+    @RequestMapping(path = "/createAltIndex", method = RequestMethod.GET)
+    public ResponseEntity<?> createAltIndex() {
+        dataService.createAltIndex();
+        return ResponseEntity.status(HttpStatus.OK).body("Alt Index created");
+    }
+
     @PostMapping(value = "/postData")
-    public ResponseEntity<HashMap<String, Object>> postTrainerData(@RequestParam (name = "file") MultipartFile file, @RequestParam (name = "name") String name) throws IOException {
-        HashMap<String, Object> response = new HashMap<>();
-        String result = dataService.saveTrainingData(file, name);
-        response.put("message", result);
+    public ResponseEntity<String> postTrainerData(@RequestParam (name = "file") MultipartFile file, @RequestParam (name = "name") String name) throws IOException {
 
-        if(result == null) return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-        if(result.contains("Could not")) return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-        if(result.contains("Bad Request.")) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return dataService.saveTrainingData(file, name);
 
     }
+
 
 }

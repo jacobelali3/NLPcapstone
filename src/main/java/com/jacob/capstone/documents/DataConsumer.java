@@ -2,13 +2,13 @@ package com.jacob.capstone.documents;
 
 import lombok.Getter;
 import lombok.Setter;
-import javax.annotation.Generated;
 import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 
 /**
- * @author JacobElali3
+ * @author JacobElali
  * This object defines training data parameters
  */
 @Getter

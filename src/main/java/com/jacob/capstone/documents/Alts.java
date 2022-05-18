@@ -1,18 +1,26 @@
 package com.jacob.capstone.documents;
 
+
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.elasticsearch.annotations.Document;
 
-import java.util.UUID;
 
+/**
+ * @author JacobElali
+ * This Pojo defines the stages of processing Alts
+ */
 @Getter
 @Setter
-@Document("alts")
+@Document(indexName = "alts", createIndex = true)
 public class Alts {
     @Id
-    private UUID id;
     private String dataSetName;
+
     private String[] alts;
+    private String[] sentencedAlts;
+    private String[] tokenizedAlts;
+    private String[] stemmedAlts;
+    private String[] taggedAlts;
 }
